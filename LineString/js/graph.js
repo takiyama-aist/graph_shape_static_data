@@ -11,6 +11,10 @@
 // グラフ線の色
 const g_colors = ["#4E79A7","#F28E2B","#E15759","#76B7B2","#59A14F","#EDC948","#B07AA1","#FF9DA7","#9C755F","#BAB0AC"];
 
+/**
+ * Global variable
+ */
+// Chartオブジェクト
 let g_chart = null;
 
 // スライダーつまみ位置
@@ -37,6 +41,9 @@ let g_sliderMax = 0
 	createGraph(0, 1);
 }
 
+/**
+ * スライダーインデックス数の取得
+ */
 function countSliderMax() {
     // グラフデータの解析
     const stringfyLineStrings = JSON.stringify(g_jsonLineStrings);
@@ -51,8 +58,8 @@ function countSliderMax() {
 
 /**
  * グラフ描画
- * @param low 小さいほうのスライダーつまみ位置
- * @param high 大きいほうのスライダーつまみ位置
+ * @param {number} low - 小さい方のスライダーつまみ位置
+ * @param {number} high - 大きい方のスライダーつまみ位置
  */
 function createGraph(low, high) {
     // スライダー位置保存
@@ -90,10 +97,11 @@ function createGraph(low, high) {
                 dataObj.datasets[i].data.push(data);
             }
         }
-        dataObj.datasets[i].borderColor = g_colors[i];
+        indexColors = i % g_colors.length;
+        dataObj.datasets[i].borderColor = g_colors[indexColors];
         dataObj.datasets[i].borderWidth = 2;
-        dataObj.datasets[i].pointBackgroundColor = g_colors[i];
-        dataObj.datasets[i].pointBorderColor = g_colors[i];
+        dataObj.datasets[i].pointBackgroundColor = g_colors[indexColors];
+        dataObj.datasets[i].pointBorderColor = g_colors[indexColors];
         dataObj.datasets[i].pointRadius = 1;
         dataObj.datasets[i].pointHoverRadius = 1;
         dataObj.datasets[i].fill = false;
@@ -185,7 +193,11 @@ function createGraph(low, high) {
     ctx.fillText(Math.floor(x_range_max) + ',' + Math.floor(y_range_max), 515, 60);
 };
 
-// スライダー値設定
+/**
+ * スライダー値設定
+ * @param {number} low - 小さい方のスライダーつまみ位置
+ * @param {number} high - 大きい方のスライダーつまみ位置
+ */
 function setSliderVal(low, high) {
     // HTMLスライダー要素
     const range = document.getElementById('range');
@@ -195,6 +207,10 @@ function setSliderVal(low, high) {
 }
 
 // スライダー操作時のイベント
+/**
+ * スライダー操作時のイベント
+ * @param {Object} event - イベントオブジェクト（ここでは未使用）
+ */
 const rangeOnChange = (event) => {
     // HTMLスライダー要素
     const range = document.getElementById('range');
