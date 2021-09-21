@@ -130,8 +130,8 @@ function setDatasetLabels(datasets, arrOidTimestamp) {
             if (dataset.label == 'oID:' + oId) {
                 // そのOIDのラベルを設定していない
                 if (!oidSet.has(oId)) {
-                    dataset.label = 'oID:' + oId + ', ' 
-                        + arrOidTimestamp[oId][0] + ' - ' + arrOidTimestamp[oId][arrOidTimestamp[oId].length - 1];
+                    dataset.label = 'oID:' + oId + ' '/* + ', ' 
+                        + arrOidTimestamp[oId][0] + ' - ' + arrOidTimestamp[oId][arrOidTimestamp[oId].length - 1]*/;
                     oidSet.add(oId);
                 }
                 // 一度ラベル設定済み
@@ -331,13 +331,10 @@ function createGraph(low, high) {
         }
     }
     // 凡例の数によって表示位置が変更することへの対応のための係数
-    let adjustment = Object.keys(arrOidTimestamp).length * 21.7;
+    let adjustment = Math.ceil((Object.keys(arrOidTimestamp).length / 5)) * 21.7;
     // グラフ位置
     let ctxDivChart = document.getElementById('divmychart');
     ctxDivChart.style.height = 535 + adjustment + 'px';
-    // スライダー位置
-    let ctxDivRange = document.getElementById('divrange');
-    ctxDivRange.style.top = 550 + adjustment + 'px';
     // グラフを描画する領域
     let ctx = document.getElementById('mychart').getContext('2d');
     // グラフ描画
@@ -351,6 +348,17 @@ function createGraph(low, high) {
     ctx.fillStyle = "black";
     ctx.fillText(Math.floor(x_range_min) + ',' + Math.floor(y_range_min), 0, 520 + adjustment);  // 左下
     ctx.fillText(Math.floor(x_range_max) + ',' + Math.floor(y_range_max), 515, 20 + adjustment); // 右上
+    // 期間の位置（Window *** - ***）
+    let ctxDivPeriod = document.getElementById('divperiod');
+    ctxDivPeriod.style.top = 530 + adjustment + 'px';
+    let oId = arrObjLineStrings[0][0].properties.oID;
+    let period = arrOidTimestamp[oId][0] + ' - ' + arrOidTimestamp[oId][arrOidTimestamp[oId].length - 1];
+    let windowPeriod = document.getElementById('period');
+    windowPeriod.style.fontSize = '14px';
+    windowPeriod.innerText = period;
+    // スライダー位置
+    let ctxDivRange = document.getElementById('divrange');
+    ctxDivRange.style.top = 560 + adjustment + 'px';
 };
 
 /**
